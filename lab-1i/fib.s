@@ -19,14 +19,17 @@ fibonacci:
 	cmp	r4, #1		@ Compare R4 wtih 1
 	ble		.L4	@ If R4 == 1 goto .L4 (which returns 1)
 
-	add		r0, r4, #4294967295	@ R0 = R4 - 1
-	bl		fibonacci	@ Recursive call to fibonacci with R4 - 1 as parameter
+	mov		r5, #1		@n1=1
+	mov		r6, #1		@n2=1
+	mov		r7, #2		@i=2
 
-	mov		r5, r0		@ R5 = R0
-	sub		r0, r4, #2	@ R0 = R4 - 2
-	bl		fibonacci	@ Recursive call to fibonacci with R4 - 2 as parameter
-
-	adds	r0, r5, r0		@ R0 = R5 + R0 (update flags)
+.Loop:
+	add		r0, r5, r6		@re_value = n1+n2;
+	mov		r6, r5		@n2 = n1;
+	mov		r5, r0		@n1 = re_value;
+	add		r7, r7, #1	@i++
+	cmp	r7, r4		@if i<x branch
+	blt		.Loop
 
 	pop {r3, r4, r5, pc}		@EPILOG
 
